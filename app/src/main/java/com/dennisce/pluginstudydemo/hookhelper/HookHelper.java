@@ -20,8 +20,8 @@ import timber.log.Timber;
 public class HookHelper {
     public static boolean tryHookStartActivity() {
         try {
-            Object object = ReflectUtil.getField("android.app.ActivityManagerNative", null, "gDefault");
-            final Object iActivityManager = ReflectUtil.getField("android.util.Singleton", object, "mInstance");
+            Object singleton  = ReflectUtil.getField("android.app.ActivityManager", null, "IActivityManagerSingleton");
+            final Object iActivityManager = ReflectUtil.getField("android.util.Singleton", singleton, "mInstance");
             Class<?> iActivityManagerInterface = Class.forName("android.app.IActivityManager");
             Object proxy = Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                     new Class[]{iActivityManagerInterface},
@@ -47,7 +47,7 @@ public class HookHelper {
                             return method.invoke(iActivityManager, args);
                         }
                     });
-            ReflectUtil.setField("android.util.Singleton", object, "mInstance", proxy);
+            ReflectUtil.setField("android.util.Singleton", singleton, "mInstance", proxy);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

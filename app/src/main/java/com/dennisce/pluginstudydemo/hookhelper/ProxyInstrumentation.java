@@ -9,8 +9,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 
-import androidx.loader.app.LoaderManager;
-
 import com.dennisce.pluginstudydemo.Constant;
 import com.dennisce.pluginstudydemo.StubActivity;
 import com.dennisce.pluginstudydemo.loader.ApkLoaderManager;

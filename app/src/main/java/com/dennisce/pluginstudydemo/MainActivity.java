@@ -2,7 +2,6 @@ package com.dennisce.pluginstudydemo;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
@@ -11,7 +10,6 @@ import android.view.View;
 
 import com.dennisce.pluginstudydemo.hookhelper.HookHelper;
 import com.dennisce.pluginstudydemo.loader.ApkLoaderManager;
-
 
 public class MainActivity extends Activity {
     @Override
@@ -39,7 +37,8 @@ public class MainActivity extends Activity {
         if (!HookHelper.tryHookStartActivity()){
             return;
         }
-        Class<?> clz = ApkLoaderManager.nowdexClassLoader.loadClass("com.dennisce.testplugin.PluginActivity");
+        ApkLoaderManager.loadApk(this,"/data/user/0/com.dennisce.pluginstudydemo/cache/plugin/app-debug.apk");
+        ApkLoaderManager.loadResources(this,"/data/user/0/com.dennisce.pluginstudydemo/cache/plugin/app-debug.apk");
         Intent newIntent = new Intent();
         newIntent.setComponent(new ComponentName("com.dennisce.testplugin","com.dennisce.testplugin.PluginActivity"));
         startActivity(newIntent);

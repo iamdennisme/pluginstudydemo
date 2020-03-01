@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 
-import com.dennisce.pluginstudydemo.util.ReflectUtil;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import dalvik.system.DexClassLoader;
 import dalvik.system.PathClassLoader;
 
 public class ApkLoaderManager {
@@ -18,8 +15,12 @@ public class ApkLoaderManager {
     public static Resources resources;
 
     public static PathClassLoader loadApk(Context context, String apkPath) {
+        File f = context.getExternalCacheDir();
+        if (!f.exists()){
+            f.mkdir();
+        }
         File apkFile = new File(apkPath);
-        PathClassLoader dexClassLoader = new PathClassLoader(apkFile.getAbsolutePath(),"/data/user/0/com.dennisce.pluginstudydemo/cache/plugin/", context.getClassLoader().getParent());
+        PathClassLoader dexClassLoader = new PathClassLoader(apkFile.getAbsolutePath(), "/data/user/0/com.dennisce.pluginstudydemo/cache/plugin/", context.getClassLoader().getParent());
         nowdexClassLoader = dexClassLoader;
         return dexClassLoader;
     }
@@ -41,7 +42,7 @@ public class ApkLoaderManager {
         superRes.getConfiguration();
         resources = new Resources(assetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
         try {
-           Class<?> clz= nowdexClassLoader.loadClass("com.dennisce.testplugin.Resource");
+            Class<?> clz = nowdexClassLoader.loadClass("com.dennisce.testplugin.Resource");
             Field field = clz.getDeclaredField("assetManager");
             field.setAccessible(true);
             field.set(null, assetManager);
