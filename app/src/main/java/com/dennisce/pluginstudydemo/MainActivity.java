@@ -8,9 +8,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 
-import com.dennisce.pluginstudydemo.hookhelper.HookHelper;
-import com.dennisce.pluginstudydemo.loader.ApkLoaderManager;
-
 public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +27,7 @@ public class MainActivity extends Activity {
         return super.getAssets();
     }
 
-    public void testHookActivity(View view) throws ClassNotFoundException {
-        if (!HookHelper.tryHookInstrumentation()){
-            return;
-        }
-        if (!HookHelper.tryHookStartActivity()){
-            return;
-        }
-        ApkLoaderManager.loadApk(this,"/data/user/0/com.dennisce.pluginstudydemo/cache/plugin/app-debug.apk");
-        ApkLoaderManager.loadResources(this,"/data/user/0/com.dennisce.pluginstudydemo/cache/plugin/app-debug.apk");
+    public void testHookActivity(View view) {
         Intent newIntent = new Intent();
         newIntent.setComponent(new ComponentName("com.dennisce.testplugin","com.dennisce.testplugin.PluginActivity"));
         startActivity(newIntent);

@@ -2,13 +2,13 @@ package com.dennisce.pluginstudydemo.hookhelper;
 
 import android.app.Instrumentation;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 
+import com.blankj.utilcode.util.ReflectUtils;
 import com.dennisce.pluginstudydemo.Constant;
 import com.dennisce.pluginstudydemo.StubActivity;
-import com.dennisce.pluginstudydemo.util.ReflectUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -20,9 +20,14 @@ import timber.log.Timber;
 public class HookHelper {
     public static boolean tryHookStartActivity() {
         try {
-            Object singleton  = ReflectUtil.getField("android.app.ActivityManager", null, "IActivityManagerSingleton");
-            final Object iActivityManager = ReflectUtil.getField("android.util.Singleton", singleton, "mInstance");
-            Class<?> iActivityManagerInterface = Class.forName("android.app.IActivityManager");
+            Object singleton;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                singleton =  ReflectUtils.reflect("android.app.ActivityManager").field("IActivityManagerSingleton").get();
+            }else {
+                singleton =  ReflectUtils.reflect("android.app.ActivityManagerNative").field("gDefault").get();
+            }
+            final Object iActivityManager =ReflectUtils.reflect(singleton).field("mInstance").get();
+            Class<?> iActivityManagerInterface = ReflectUtils.reflect("android.app.IActivityManager").get();
             Object proxy = Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
                     new Class[]{iActivityManagerInterface},
                     new InvocationHandler() {
@@ -47,19 +52,18 @@ public class HookHelper {
                             return method.invoke(iActivityManager, args);
                         }
                     });
-            ReflectUtil.setField("android.util.Singleton", singleton, "mInstance", proxy);
+            ReflectUtils.reflect(singleton).field("mInstance",proxy);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-
     public static boolean tryHookInstrumentation() {
         try {
-            Object currentActivityThread = ReflectUtil.getField("android.app.ActivityThread", null, "sCurrentActivityThread");
-            Instrumentation rawInstrumentation = (Instrumentation) ReflectUtil.getField("android.app.ActivityThread", currentActivityThread, "mInstrumentation");
-            ReflectUtil.setField("android.app.ActivityThread", currentActivityThread, "mInstrumentation", new ProxyInstrumentation(rawInstrumentation));
+            Object currentActivityThread = ReflectUtils.reflect("android.app.ActivityThread").field("sCurrentActivityThread").get();
+            Instrumentation rawInstrumentation = ReflectUtils.reflect(currentActivityThread).field("mInstrumentation").get();
+            ReflectUtils.reflect(currentActivityThread).field("mInstrumentation",new ProxyInstrumentation(rawInstrumentation));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
