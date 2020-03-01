@@ -11,18 +11,15 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import dalvik.system.DexClassLoader;
+import dalvik.system.PathClassLoader;
 
 public class ApkLoaderManager {
-    public static DexClassLoader nowdexClassLoader;
+    public static PathClassLoader nowdexClassLoader;
     public static Resources resources;
 
-    public static DexClassLoader loadApk(Context context, String apkPath) {
-        File dexFile = context.getDir("dex", Context.MODE_PRIVATE);
+    public static PathClassLoader loadApk(Context context, String apkPath) {
         File apkFile = new File(apkPath);
-        ClassLoader classLoader = context.getClassLoader();
-        DexClassLoader dexClassLoader = new DexClassLoader(apkFile.getAbsolutePath(),
-                dexFile.getAbsolutePath(), null, classLoader.getParent());
-
+        PathClassLoader dexClassLoader = new PathClassLoader(apkFile.getAbsolutePath(),"/data/user/0/com.dennisce.pluginstudydemo/cache/plugin/", context.getClassLoader().getParent());
         nowdexClassLoader = dexClassLoader;
         return dexClassLoader;
     }
@@ -31,24 +28,23 @@ public class ApkLoaderManager {
         if (resources != null) {
             return resources;
         }
-        AssetManager mAssetManager = null;
+        AssetManager assetManager = null;
         try {
-            AssetManager assetManager = AssetManager.class.newInstance();
+            assetManager = AssetManager.class.newInstance();
             Method addAssetPath = assetManager.getClass().getMethod("addAssetPath", String.class);
             addAssetPath.invoke(assetManager, apkPath);
-            mAssetManager = assetManager;
         } catch (Exception e) {
             e.printStackTrace();
         }
         Resources superRes = context.getResources();
         superRes.getDisplayMetrics();
         superRes.getConfiguration();
-        resources = new Resources(mAssetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
+        resources = new Resources(assetManager, superRes.getDisplayMetrics(), superRes.getConfiguration());
         try {
            Class<?> clz= nowdexClassLoader.loadClass("com.dennisce.testplugin.Resource");
             Field field = clz.getDeclaredField("assetManager");
             field.setAccessible(true);
-            field.set(null, mAssetManager);
+            field.set(null, assetManager);
             Field field1 = clz.getDeclaredField("resources");
             field1.setAccessible(true);
             field1.set(null, resources);
