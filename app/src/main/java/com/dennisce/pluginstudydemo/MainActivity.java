@@ -25,10 +25,14 @@ public class MainActivity extends Activity {
         return super.getAssets();
     }
 
-    public void testHookActivity(View view) {
+    public void startPluginActivity(View view) {
         Intent newIntent = new Intent();
-        newIntent.setComponent(new ComponentName("com.dennisce.testplugin","com.dennisce.testplugin.PluginActivity"));
+        newIntent.setComponent(new ComponentName("com.dennisce.testplugin", "com.dennisce.testplugin.PluginActivity"));
         startActivity(newIntent);
+    }
+
+    public void startHostActivity(View view) {
+        startActivity(new Intent(this, OtherActivity.class));
     }
 
 }

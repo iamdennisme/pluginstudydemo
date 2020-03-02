@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".StubActivity" />
+        <activity android:name=".OtherActivity"/>
     </application>
 
 </manifest>
