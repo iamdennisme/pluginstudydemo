@@ -7,7 +7,7 @@ import android.os.Build;
 
 
 import com.blankj.utilcode.util.ReflectUtils;
-import com.dennisce.pluginstudydemo.Constant;
+import com.dennisce.pluginstudydemo.base.Constant;
 import com.dennisce.pluginstudydemo.StubActivity;
 
 import java.lang.reflect.InvocationHandler;

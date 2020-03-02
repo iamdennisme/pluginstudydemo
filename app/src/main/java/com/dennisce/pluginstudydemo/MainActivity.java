@@ -13,8 +13,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getResources().getColor(R.color.colorAccent);
-        getResources().getDrawable(R.drawable.ic_launcher_background);
     }
 
     @Override
