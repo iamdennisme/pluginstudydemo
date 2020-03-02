@@ -15,10 +15,18 @@ import java.lang.reflect.Method;
 import dalvik.system.PathClassLoader;
 
 public class ApkLoadManager {
+    private volatile static ApkLoadManager apkLoadManager;
+    private Context context;
+    // APK，由pluginPath及pluginApkName生成
+    private File apkFile;
+    // 根据abi解压so后生成
+    private File libFile;
+    // 插件APK的主目录
+    private String pluginPath;
+    // 插件的classloader
+    private PathClassLoader pluginClassLoader;
     private ApkLoadManager() {
     }
-
-    private volatile static ApkLoadManager apkLoadManager;
 
     public static ApkLoadManager getSingleton() {
         if (apkLoadManager == null) {
@@ -30,16 +38,6 @@ public class ApkLoadManager {
         }
         return apkLoadManager;
     }
-
-    private Context context;
-    // APK，由pluginPath及pluginApkName生成
-    private File apkFile;
-    // 根据abi解压so后生成
-    private File libFile;
-    // 插件APK的主目录
-    private String pluginPath;
-    // 插件的classloader
-    private PathClassLoader pluginClassLoader;
 
     public void init(Context context, String pluginPath, String pluginApkName) {
         this.context = context;

@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 
-import com.dennisce.pluginstudydemo.base.Constant;
 import com.dennisce.pluginstudydemo.StubActivity;
+import com.dennisce.pluginstudydemo.base.Constant;
 import com.dennisce.pluginstudydemo.loader.ApkLoadManager;
 
 public class ProxyInstrumentation extends Instrumentation {
