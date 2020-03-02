@@ -21,6 +21,9 @@ public class ProxyInstrumentation extends Instrumentation {
             return rawInstrumentation.newActivity(cl, className, intent);
         }
         Intent rawIntent = intent.getParcelableExtra(Constant.RAW_INTENT);
+        if (rawIntent==null){
+            return rawInstrumentation.newActivity(cl, className, intent);
+        }
         return rawInstrumentation.newActivity(ApkLoadManager.getSingleton().getPluginClassLoader(), rawIntent.getComponent().getClassName(), rawIntent);
     }
 }
