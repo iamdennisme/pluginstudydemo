@@ -5,15 +5,14 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public final class ClassUtils {
-    private final static String TAG = "ClassUtils";
+import timber.log.Timber;
 
+public final class ClassUtils {
     private ClassUtils() {
     }
 
@@ -29,32 +28,28 @@ public final class ClassUtils {
 
         List<Class> returnClassList = new ArrayList<Class>();
         try {
-            //Get all activity classes in the AndroidManifest.xml
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
             if (packageInfo.activities != null) {
-                Log.d(TAG, "Found " + packageInfo.activities.length + " activity in the AndrodiManifest.xml");
+                Timber.d("Found " + packageInfo.activities.length + " activity in the AndrodiManifest.xml");
                 for (ActivityInfo ai : packageInfo.activities) {
                     Class c;
                     try {
                         c = Class.forName(ai.name);
-                        // Maybe isAssignableFrom is unnecessary
                         if (Activity.class.isAssignableFrom(c)) {
                             returnClassList.add(c);
-                            Log.d(TAG, ai.name + "...OK");
+                            Timber.d("%s...OK", ai.name);
                         }
                     } catch (ClassNotFoundException e) {
-                        Log.d(TAG, "Class Not Found:" + ai.name);
-//                                                e.printStackTrace();
+                        Timber.d("Class Not Found:%s", ai.name);
                     }
                 }
-                Log.d(TAG, "Filter out, left " + returnClassList.size() + " activity," + Arrays.toString(returnClassList.toArray()));
+                Timber.d("Filter out, left " + returnClassList.size() + " activity," + Arrays.toString(returnClassList.toArray()));
 
-                //Exclude some activity classes
                 if (excludeList != null) {
                     returnClassList.removeAll(excludeList);
-                    Log.d(TAG, "Exclude " + excludeList.size() + " activity," + Arrays.toString(excludeList.toArray()));
+                    Timber.d("Exclude " + excludeList.size() + " activity," + Arrays.toString(excludeList.toArray()));
                 }
-                Log.d(TAG, "Return " + returnClassList.size() + " activity," + Arrays.toString(returnClassList.toArray()));
+                Timber.d("Return " + returnClassList.size() + " activity," + Arrays.toString(returnClassList.toArray()));
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
