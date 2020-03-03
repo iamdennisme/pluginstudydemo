@@ -1,6 +1,11 @@
 package com.dennisce.pluginstudydemo.loader;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Build;
@@ -11,6 +16,8 @@ import com.blankj.utilcode.util.ZipUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
 
 import dalvik.system.PathClassLoader;
 
@@ -25,6 +32,7 @@ public class ApkLoadManager {
     private String pluginPath;
     // 插件的classloader
     private PathClassLoader pluginClassLoader;
+
     private ApkLoadManager() {
     }
 
@@ -52,6 +60,9 @@ public class ApkLoadManager {
         }
         // 生成PluginClassloader
         if (!createPluginClassloader()) {
+            return false;
+        }
+        if (!registerReceivers()) {
             return false;
         }
         // 生成Resource
@@ -109,6 +120,28 @@ public class ApkLoadManager {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private boolean registerReceivers() {
+        Object packageParser = ReflectUtils.reflect("android.content.pm.PackageParser").newInstance().get();
+        Object packageObj = ReflectUtils.reflect(packageParser).method("parsePackage", apkFile, PackageManager.GET_RECEIVERS).get();
+        List receivers = ReflectUtils.reflect(packageObj).field("receivers").get();
+        for (Object receiver : receivers) {
+           if (!registerReceiver(receiver)){
+               return false;
+           }
+        }
+        return true;
+    }
+
+    private boolean registerReceiver(Object receiver) {
+        List<IntentFilter> filtes= ReflectUtils.reflect(receiver).field("intents").get();
+        for (IntentFilter intentFilter:filtes){
+            ActivityInfo receiverInfo=ReflectUtils.reflect(receiver).field("info").get();
+            BroadcastReceiver broadcastReceiver=ReflectUtils.reflect(receiverInfo.name,pluginClassLoader).newInstance().get();
+            context.registerReceiver(broadcastReceiver,intentFilter);
+        }
+        return true;
     }
 
     public PathClassLoader getPluginClassLoader() {
