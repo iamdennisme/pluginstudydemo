@@ -17,12 +17,12 @@ public class StubService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(getApplicationContext(),"StubService onCreate",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "StubService onCreate", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Toast.makeText(getApplicationContext(),"StubService onDestroy",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "StubService onDestroy", Toast.LENGTH_LONG).show();
     }
 }

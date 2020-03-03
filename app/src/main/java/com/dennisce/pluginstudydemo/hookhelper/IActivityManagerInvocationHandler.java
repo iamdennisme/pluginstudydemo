@@ -29,17 +29,17 @@ public class IActivityManagerInvocationHandler implements InvocationHandler {
         if (method.getName().equals("startActivity")) {
             return hookStartActivity(method, args);
         }
-        if (method.getName().equals("startService")||method.getName().equals("stopService")) {
+        if (method.getName().equals("startService") || method.getName().equals("stopService")) {
             return hookService(method, args);
         }
         return method.invoke(base, args);
     }
 
-    private Object hookService(Method method, Object[] args)throws IllegalAccessException, InvocationTargetException{
-        Intent rawIntent= (Intent) args[1];
+    private Object hookService(Method method, Object[] args) throws IllegalAccessException, InvocationTargetException {
+        Intent rawIntent = (Intent) args[1];
         List<Class> services = ComponentUtils.getServiceClass(Utils.getApp(), Utils.getApp().getPackageName());
-        for (Class clz :services){
-            if (clz.getName().equals(rawIntent.getComponent().getClassName())){
+        for (Class clz : services) {
+            if (clz.getName().equals(rawIntent.getComponent().getClassName())) {
                 return method.invoke(base, args);
             }
         }

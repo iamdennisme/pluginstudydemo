@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.dennisce.pluginstudydemo.PluginManager;
 import com.dennisce.pluginstudydemo.R;
 
 public class StubActivity extends Activity {

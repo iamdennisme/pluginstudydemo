@@ -44,7 +44,7 @@ public class HookHelper {
     public static boolean tryHookActivityThread() {
         Object currentActivityThread = ReflectUtils.reflect("android.app.ActivityThread").field("sCurrentActivityThread").get();
         Handler mH = ReflectUtils.reflect(currentActivityThread).field("mH").get();
-        ReflectUtils.reflect(mH).field("mCallback",new ProxyMhHandler(mH));
+        ReflectUtils.reflect(mH).field("mCallback", new ProxyMhHandler(mH));
         return true;
     }
 }

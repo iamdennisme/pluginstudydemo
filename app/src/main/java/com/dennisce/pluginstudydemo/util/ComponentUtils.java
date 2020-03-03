@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;

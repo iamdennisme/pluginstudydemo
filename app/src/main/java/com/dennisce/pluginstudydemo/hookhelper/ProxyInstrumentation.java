@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 
-import com.dennisce.pluginstudydemo.stub.StubActivity;
 import com.dennisce.pluginstudydemo.base.Constant;
-import com.dennisce.pluginstudydemo.loader.ApkLoadManager;
+import com.dennisce.pluginstudydemo.stub.StubActivity;
 
 public class ProxyInstrumentation extends Instrumentation {
     private Instrumentation rawInstrumentation;
@@ -21,9 +20,9 @@ public class ProxyInstrumentation extends Instrumentation {
             return rawInstrumentation.newActivity(cl, className, intent);
         }
         Intent rawIntent = intent.getParcelableExtra(Constant.RAW_INTENT);
-        if (rawIntent==null){
+        if (rawIntent == null) {
             return rawInstrumentation.newActivity(cl, className, intent);
         }
-        return rawInstrumentation.newActivity(ApkLoadManager.getSingleton().getPluginClassLoader(), rawIntent.getComponent().getClassName(), rawIntent);
+        return rawInstrumentation.newActivity(cl, rawIntent.getComponent().getClassName(), rawIntent);
     }
 }

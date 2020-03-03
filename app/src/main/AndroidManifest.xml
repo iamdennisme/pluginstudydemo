@@ -22,7 +22,13 @@
         </activity>
         <activity android:name=".stub.StubActivity" />
         <activity android:name=".OtherActivity" />
-        <service android:name=".stub.StubService"/>
+
+        <service android:name=".stub.StubService" />
+        <provider
+            android:name=".stub.StubContentProvider"
+            android:authorities="contentProviderHost"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
