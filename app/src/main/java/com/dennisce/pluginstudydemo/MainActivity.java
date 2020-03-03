@@ -8,6 +8,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 
+import com.dennisce.pluginstudydemo.stub.StubActivity;
+
 public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,19 @@ public class MainActivity extends Activity {
     }
 
     public void startHostActivity(View view) {
-        startActivity(new Intent(this, OtherActivity.class));
+        startActivity(new Intent(this, StubActivity.class));
+    }
+
+    public void startService(View view) {
+        Intent newIntent = new Intent();
+        newIntent.setComponent(new ComponentName("com.dennisce.testplugin", "com.dennisce.testplugin.PluginService"));
+        startService(newIntent);
+    }
+
+    public void stopService(View view) {
+        Intent newIntent = new Intent();
+        newIntent.setComponent(new ComponentName("com.dennisce.testplugin", "com.dennisce.testplugin.PluginService"));
+        stopService(newIntent);
     }
 
 }

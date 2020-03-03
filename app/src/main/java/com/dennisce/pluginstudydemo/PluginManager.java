@@ -22,8 +22,13 @@ public class PluginManager {
         if (!HookHelper.tryHookInstrumentation()) {
             return false;
         }
-        // hook StartActivity
-        if (!HookHelper.tryHookStartActivity()) {
+        // hook ActivityManager
+        if (!HookHelper.tryHookIActivityManager()) {
+            return false;
+        }
+
+        // hook HookActivityThread
+        if (!HookHelper.tryHookActivityThread()) {
             return false;
         }
 
