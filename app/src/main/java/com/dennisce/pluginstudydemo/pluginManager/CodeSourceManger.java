@@ -44,6 +44,7 @@ public class CodeSourceManger {
         }
     }
 
+    // 合并so库，这里只根据sdk 23 进行了实现，据我观察源码，sdk23 sdk22 sdk 24 的 makePathElements方法参数都不一样，但都比较简单，这里就不一一实现了
     private static boolean mergeNative(Context context, String apkPath, String optimizedDirectory) {
         try {
             String librarySearchPath = null;
