@@ -10,11 +10,11 @@
         android:id="@+id/startPluginActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:onClick="startPluginActivity"
         android:text="startPluginActivity"
         app:layout_constraintBottom_toTopOf="@+id/startHostActivity"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,8 +24,57 @@
         android:layout_height="wrap_content"
         android:onClick="startHostActivity"
         android:text="startHostActivity"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sendBroadcast"
         app:layout_constraintEnd_toEndOf="@+id/startPluginActivity"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/startPluginActivity"
         app:layout_constraintTop_toBottomOf="@+id/startPluginActivity" />
+
+    <Button
+        android:id="@+id/startService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="startService"
+        android:text="startService"
+        app:layout_constraintBottom_toTopOf="@+id/stopService"
+        app:layout_constraintEnd_toEndOf="@+id/startHostActivity"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/startHostActivity"
+        app:layout_constraintTop_toBottomOf="@+id/useProvider" />
+
+    <Button
+        android:id="@+id/stopService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="stopService"
+        android:text="stopService"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/startService"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/startService"
+        app:layout_constraintTop_toBottomOf="@+id/startService" />
+
+    <Button
+        android:id="@+id/sendBroadcast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="sendBroadcast"
+        android:text="sendBroadcast"
+        app:layout_constraintBottom_toTopOf="@+id/useProvider"
+        app:layout_constraintEnd_toEndOf="@+id/startHostActivity"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/startHostActivity"
+        app:layout_constraintTop_toBottomOf="@+id/startHostActivity" />
+
+    <Button
+        android:id="@+id/useProvider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="useProvider"
+        android:text="useProvider"
+        app:layout_constraintBottom_toTopOf="@+id/startService"
+        app:layout_constraintEnd_toEndOf="@+id/sendBroadcast"
+        app:layout_constraintStart_toStartOf="@+id/sendBroadcast"
+        app:layout_constraintTop_toBottomOf="@+id/sendBroadcast" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
