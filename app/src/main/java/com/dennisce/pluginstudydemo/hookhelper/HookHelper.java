@@ -7,7 +7,7 @@ import android.content.Intent;
 
 
 import com.dennisce.pluginstudydemo.Constant;
-import com.dennisce.pluginstudydemo.StubActivity;
+import com.dennisce.pluginstudydemo.stub.StubActivity;
 import com.dennisce.pluginstudydemo.util.ReflectUtil;
 
 import java.lang.reflect.InvocationHandler;
@@ -18,7 +18,7 @@ import java.lang.reflect.Proxy;
 import timber.log.Timber;
 
 public class HookHelper {
-    public static boolean tryHookStartActivity() {
+    public static boolean tryHookActivityManagerNative(Context context) {
         try {
             Object object = ReflectUtil.getField("android.app.ActivityManagerNative", null, "gDefault");
             final Object iActivityManager = ReflectUtil.getField("android.util.Singleton", object, "mInstance");
@@ -28,22 +28,15 @@ public class HookHelper {
                     new InvocationHandler() {
                         @Override
                         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                            if (method.getName().equals("startActivity")) {
-                                Timber.d("invoke start activity");
-                            }
-                            int index = 0;
-                            for (int i = 0; i < args.length; i++) {
-                                if (args[i] instanceof Intent) {
-                                    index = i;
-                                }
-                            }
-                            if (!(args[index] instanceof Intent)) {
+                            if (!method.getName().equals("startActivity")) {
                                 return method.invoke(iActivityManager, args);
                             }
+                            Timber.d("invoke start activity");
+                            Intent rawIntent=(Intent) args[2];
                             Intent newIntent = new Intent();
-                            newIntent.putExtra(Constant.RAW_INTENT, (Intent) args[index]);
-                            newIntent.setComponent(new ComponentName(StubActivity.class.getPackage().getName(), StubActivity.class.getName()));
-                            args[index] = newIntent;
+                            newIntent.putExtra(Constant.RAW_INTENT, rawIntent);
+                            newIntent.setComponent(new ComponentName(rawIntent.getComponent().getPackageName(), StubActivity.class.getName()));
+                            args[2] = newIntent;
                             return method.invoke(iActivityManager, args);
                         }
                     });

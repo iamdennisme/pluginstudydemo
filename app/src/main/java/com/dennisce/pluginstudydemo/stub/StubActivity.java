@@ -1,9 +1,11 @@
-package com.dennisce.pluginstudydemo;
+package com.dennisce.pluginstudydemo.stub;
 
 import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+
+import com.dennisce.pluginstudydemo.R;
 
 public class StubActivity extends Activity {
     @Override

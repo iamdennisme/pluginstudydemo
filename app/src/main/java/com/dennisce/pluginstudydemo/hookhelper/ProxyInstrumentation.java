@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 import com.dennisce.pluginstudydemo.Constant;
-import com.dennisce.pluginstudydemo.StubActivity;
+import com.dennisce.pluginstudydemo.stub.StubActivity;
 
 public class ProxyInstrumentation extends Instrumentation {
     private Instrumentation rawInstrumentation;

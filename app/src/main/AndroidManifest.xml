@@ -17,8 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OtherTestActivity" />
-        <activity android:name=".StubActivity" />
+
+        <activity android:name=".stub.StubActivity" />
     </application>
 
 </manifest>

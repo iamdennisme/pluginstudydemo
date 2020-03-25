@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
     }
 
     public void testHookActivity(View view) {
-        if (!HookHelper.tryHookStartActivity()) {
+        if (!HookHelper.tryHookActivityManagerNative(this)) {
             Toast.makeText(this, "hook失败", Toast.LENGTH_SHORT).show();
             return;
         }
